@@ -1,0 +1,47 @@
+--In this SQL code, I'm querying a database that's holding Solar System Object information to dig through aspects of the data.
+
+SELECT * FROM solar_system_objects;
+
+--What can I find out about the data with aggregate functions?
+Select round(avg(mass)), Round(min(mass)), max(mass) from solar_system_objects;
+
+--What can I find out about the data with aggregate functions?
+Select round(avg(density)), Round(min(density)), round(max(density)) from solar_system_objects;
+
+--Listing the planets (no other objects/bodies) that have density greater than 1 and are round in shape.
+Select Body, Mass, Volume, Density, type_of_object, Shape
+    from solar_system_objects
+    Group by Density
+    Having density > 1 and shape = "round" and type_of_object like '%planet%' ;
+
+--Categorizing the planets (no other objects/bodies) by their masses.
+Select body, mass, type_of_object,
+    CASE
+    When Mass > 50000 then 'Big Boy'
+    When Mass > 1000 then 'Large'
+    When Mass > 100 then 'Mid'
+    When Mass > 1 then 'Small'
+    Else 'Bite Size'
+    End AS 'Planet Sizes'
+    From solar_system_objects
+    Where type_of_object like '%planet%'
+    Order by "Planet Sizes";
+
+--How many Planets fall into each of the categories that were previously made?
+Select Count (*),
+    CASE
+    When Mass > 50000 then 'Big Boy'
+    When Mass > 1000 then 'Large'
+    When Mass > 100 then 'Mid'
+    When Mass > 1 then 'Small'
+    Else 'Bite Size'
+    End AS 'Planet Sizes'
+    From solar_system_objects
+    Where type_of_object like '%planet%'
+    Group by "Planet Sizes";
+
+--How many planets (no other objects/bodies) would be classified as "Gassy" based on a density between 1 and 2?
+Select Body AS GASSY 
+from solar_system_objects 
+Where Density between 1 and 2 and type_of_object like '%planet%';
+ 
