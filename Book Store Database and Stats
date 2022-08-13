@@ -1,6 +1,6 @@
 --Create Book Store Database
 
-CREATE TABLE Book_Store (ID INTEGER PRIMARY KEY, Book_Name TEXT, Cost NUMERIC, Book_Type TEXT, Audience TEXT);
+CREATE TABLE Book_Store (BookID INTEGER PRIMARY KEY, Book_Name TEXT, Cost NUMERIC, Book_Type TEXT, Audience TEXT);
 INSERT INTO Book_Store VALUES (1, "Revengers", 5, "Short Story", "Teen");
 INSERT INTO Book_Store VALUES (2, "Bookman", 3, "Light Novel", "Kids");
 INSERT INTO Book_Store VALUES (3, "Made in Space", 7, "Novel", "Adult");
@@ -18,7 +18,7 @@ INSERT INTO Book_Store VALUES (14, "Moonlit Phantasm", 8, "Novel", "Teen");
 INSERT INTO Book_Store VALUES (15, "Drody", 6, "Light Novel", "Adult");
 
 --Display the database ordered by cost.
-SELECT ID,Book_Name, Cost, Book_Type 
+SELECT BookID,Book_Name, Cost, Book_Type 
 FROM Book_Store 
 Order BY Cost;
 
