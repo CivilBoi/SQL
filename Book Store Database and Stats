@@ -1,0 +1,35 @@
+--Create Book Store Database
+
+CREATE TABLE Book_Store (ID INTEGER PRIMARY KEY, Book_Name TEXT, Cost NUMERIC, Book_Type TEXT, Audience TEXT);
+INSERT INTO Book_Store VALUES (1, "Revengers", 5, "Short Story", "Teen");
+INSERT INTO Book_Store VALUES (2, "Bookman", 3, "Light Novel", "Kids");
+INSERT INTO Book_Store VALUES (3, "Made in Space", 7, "Novel", "Adult");
+INSERT INTO Book_Store VALUES (4, "The Written", 3, "Novel", "Everyone");
+INSERT INTO Book_Store VALUES (5, "Minder", 8, "Light Novel", "Adult");
+INSERT INTO Book_Store VALUES (6, "Sinister Rebellion", 7, "Novel", "Teen");
+INSERT INTO Book_Store VALUES (7, "Mister Monizullion", 4, "Short Story", "Kids");
+INSERT INTO Book_Store VALUES (8, "Radio Play", 5, "Light Novel", "Adult");
+INSERT INTO Book_Store VALUES (9, "Ringer", 6, "Short Story", "Adult");
+INSERT INTO Book_Store VALUES (10, "Loader Man", 5, "Short Story", "Everyone");
+INSERT INTO Book_Store VALUES (11, "Interstice", 8, "Novel", "Teen");
+INSERT INTO Book_Store VALUES (12, "Knights of Tenar", 4, "Light Novel", "Teen");
+INSERT INTO Book_Store VALUES (13, "MoneyRun", 5, "Short Story", "Adult");
+INSERT INTO Book_Store VALUES (14, "Moonlit Phantasm", 8, "Novel", "Teen");
+INSERT INTO Book_Store VALUES (15, "Drody", 6, "Light Novel", "Adult");
+
+--Display the database ordered by cost.
+SELECT ID,Book_Name, Cost, Book_Type 
+FROM Book_Store 
+Order BY Cost;
+
+--Display the number of novels in the database.
+SELECT Count (*) 
+AS NovelCount 
+FROM Book_Store 
+WHERE (Book_Type = "Novel");
+
+--Display the average cost of each book type.
+SELECT avg (cost) Cost, Book_Type 
+FROM Book_Store 
+GROUP BY Book_type 
+ORDER BY cost;
