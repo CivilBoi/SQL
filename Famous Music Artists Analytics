@@ -1,0 +1,70 @@
+-- In project, using data on famous music artists, I created multiple tables with relevant data in each. 
+-- Then performed analytics on the data joining the data into single tables for better clarity.
+
+
+CREATE Table Artists (id INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT, Age INTEGER, Genre TEXT, SongName TEXT, FeatureID INTEGER);
+
+CREATE TABLE Origin (id INTEGER PRIMARY KEY AUTOINCREMENT, ArtistID INTEGER, City TEXT);
+
+CREATE TABLE Songs (id INTEGER PRIMARY KEY AUTOINCREMENT, ArtistID INTEGER, Albums INTEGER, Singles INTEGER);
+
+CREATE TABLE BestFriends (id INTEGER PRIMARY KEY AUTOINCREMENT, ArtistID INTEGER, BFFID INTEGER);
+
+INSERT INTO artists (Name, Age, Genre, SongName, FeatureID) VALUES ("Kendrick Lamar", 35, "Rap", "Loyalty", 4);
+INSERT INTO artists (Name, Age, Genre, SongName, FeatureID) VALUES ("Ariana Grande", 29, "Pop", "Null", Null);
+INSERT INTO artists (Name, Age, Genre, SongName, FeatureID) VALUES ("Harry Styles", 28, "Pop", "Null", NULL);
+INSERT INTO artists (Name, Age, Genre, SongName, FeatureID) VALUES ("Rihanna", 34, "Pop", "Null", Null);
+INSERT INTO artists (Name, Age, Genre, SongName, FeatureID) VALUES ("J.Cole", 37, "Rap", "Forbidden Fruit", 1);
+
+INSERT INTO Origin (ArtistID, City) Values (1, "Compton");
+INSERT INTO Origin (ArtistID, City) Values (2, "Boca Raton");
+INSERT INTO Origin (ArtistID, City) Values (3, "Redditch");
+INSERT INTO Origin (ArtistID, City) Values (4, "Saint Michael");
+INSERT INTO Origin (ArtistID, City) Values (5, "Frankfurt");
+
+INSERT iNtO Songs (ArtistID, Albums, Singles) VALUES (1, 5, 65);
+INSERT iNtO Songs (ArtistID, Albums, Singles) VALUES (2, 6, 52);
+INSERT iNtO Songs (ArtistID, Albums, Singles) VALUES (3, 3, 12);
+INSERT iNtO Songs (ArtistID, Albums, Singles) VALUES (4, 8, 53);
+INSERT iNtO Songs (ArtistID, Albums, Singles) VALUES (5, 6, 56);
+
+iNSERT INTO BestFriends (ArtistID, BFFID) Values (1, 4);
+iNSERT INTO BestFriends (ArtistID, BFFID) Values (2, 5);
+
+--Wanted to know which city each artist was form.
+Select artists.Name, Origin.city as Birthplace
+    From Artists
+    Join Origin
+    on artists.Id = Origin.id;
+
+--I also wanted to know how many albums and singles each artist had.
+Select artists.Name, Songs.Albums, Songs.Singles
+    From Artists
+    Join Songs
+    on Artists.ID = Songs.id;
+
+--Then I looked at exploring what the total count of albums and singles based on each genre.
+ Select artists.Genre, Sum(Songs.Albums) AS Total_Albums, Sum(Songs.Singles) as Total_Singles
+    From Artists
+    Join Songs
+    on Artists.ID = Songs.id
+    Group By Genre
+    Order By albums;
+
+--Here, I made it clear which artists had BFFs and who they were.
+SELECT a.name, b.name AS BFF
+    From Bestfriends
+    Join Artists AS a
+    on a.ID = Bestfriends.ArtistID
+    Join Artists as b
+    on b.ID = Bestfriends.BFFID;
+
+--Wanted to visualize the artists that had features, which is setting up for the following piece of SQL.
+Select id, name, FeatureID, Songname 
+    From Artists;
+
+--Within the same table, I wanted a better presentation of which artists had a song featuring an artist in the same table of data.
+Select Artists.name as Artist, Artists.Songname, Feature.Name as Feature
+    From Artists
+    Join Artists Feature
+    On Artists.FeatureID = Feature.ID;
