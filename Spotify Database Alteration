@@ -1,0 +1,61 @@
+/* My inperpretation of the Spotify SQL */
+/*Table for basic user settings*/
+CREATE TABLE user_settings (id INTEGER PRIMARY KEY AUTOINCREMENT, User_Plan TEXT, Data_Saver TEXT, Language TEXT, Audio_Quality TEXT, Explicit_Content TEXT, Connected_Devices NUMERIC);
+/*Table for notification settings that each user would have*/
+CREATE TABLE notification_settings (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, New_Release_Friday TEXT, Artist_Promotions TEXT, Spotify_News TEXT, Concert_News TEXT);
+/*Table for an individual playlist settings*/
+CREATE TABLE playlist_settings (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, Playlist_Name TEXT, Playlist_Privacy TEXT, Songs INTEGER);
+
+INSERT INTO user_settings (User_Plan, Data_Saver, Language, Audio_Quality, Explicit_Content, Connected_Devices) VALUES ("Individual", "Off", "English", "Very High", "Yes", 3);
+INSERT INTO user_settings (User_Plan, Data_Saver, Language, Audio_Quality, Explicit_Content, Connected_Devices) VALUES ("Duo", "On", "English", "High", "Yes", 2);
+INSERT INTO user_settings (User_Plan, Data_Saver, Language, Audio_Quality, Explicit_Content, Connected_Devices) VALUES ("Individual", "On", "Spanish", "Very High", "Yes", 3);
+INSERT INTO user_settings (User_Plan, Data_Saver, Language, Audio_Quality, Explicit_Content, Connected_Devices) VALUES ("Family", "On", "English", "Normal", "No", 6);
+INSERT INTO user_settings (User_Plan, Data_Saver, Language, Audio_Quality, Explicit_Content, Connected_Devices) VALUES ("Student", "On", "French", "Normal", "Yes", 2);
+INSERT INTO user_settings (User_Plan, Data_Saver, Language, Audio_Quality, Explicit_Content, Connected_Devices) VALUES ("Individual", "No", "English", "Very High", "Yes", 3);
+
+INSERT INTO notification_settings (user_id, New_Release_Friday, Artist_Promotions, Spotify_News, Concert_News) VALUES (1, "Push", "Push", "Email", "Off");
+INSERT INTO notification_settings (user_id, New_Release_Friday, Artist_Promotions, Spotify_News, Concert_News) VALUES (2, "Off", "Off", "Email", "Off");
+INSERT INTO notification_settings (user_id, New_Release_Friday, Artist_Promotions, Spotify_News, Concert_News) VALUES (3, "Push", "Push", "Off", "Off");
+INSERT INTO notification_settings (user_id, New_Release_Friday, Artist_Promotions, Spotify_News, Concert_News) VALUES (4, "Push", "Push", "Push", "Off");
+INSERT INTO notification_settings (user_id, New_Release_Friday, Artist_Promotions, Spotify_News, Concert_News) VALUES (5, "Push", "Off", "Off", "Off");
+INSERT INTO notification_settings (user_id, New_Release_Friday, Artist_Promotions, Spotify_News, Concert_News) VALUES (6, "Push", "Push", "Push", "Push");
+
+INSERT INTO playlist_settings (user_id, Playlist_Name, Playlist_Privacy, Songs) VALUES (1, "Chill", "Open", 235);
+INSERT INTO playlist_settings (user_id, Playlist_Name, Playlist_Privacy, Songs) VALUES (2, "HotGirl", "Open", 198);
+INSERT INTO playlist_settings (user_id, Playlist_Name, Playlist_Privacy, Songs) VALUES (3, "Energy", "Open", 478);
+INSERT INTO playlist_settings (user_id, Playlist_Name, Playlist_Privacy, Songs) VALUES (4, "Bangers", "Open", 3495);
+INSERT INTO playlist_settings (user_id, Playlist_Name, Playlist_Privacy, Songs) VALUES (5, "GoodGood", "Open", 894);
+INSERT INTO playlist_settings (user_id, Playlist_Name, Playlist_Privacy, Songs) VALUES (6, "Atmospheric", "Private", 94);
+
+SELECT * from user_settings;
+/*After looking over the table for user settings, I realized there is a typo on the last row for user 6 for the Data Saver settings */
+Update user_settings SET Data_Saver = 'Off' 
+where id = 6;
+Select * from user_settings;
+
+/* some users decide to update their data saver and audio quality to save data */
+UPDATE user_settings SET Data_Saver = 'Off' 
+Where id = 1 and 6;
+UPDATE user_settings SET Audio_Quality = 'High'
+Where id = 1 and 6;
+
+/* a user wants to delete their playlist*/
+DELETE FROM Playlist_Settings
+where User_id = 3;
+Select * FROM playlist_settings;
+
+/* a user wants to delete a song from their playlist*/
+UPDATE playlist_settings SET Songs = songs - 1
+Where user_id = 6;
+SELECT * FROM playlist_settings 
+where user_id = 6;
+
+/*Spotify wants to see if it's necessary to keep sending Concert Updates*/
+Select*From notification_settings;
+Select 
+(Select Count(Concert_News) From notification_settings Where Concert_News like '%push%' or "%email%") as "On",
+(Select Count(Concert_News) From notification_settings Where Concert_News like 'off') as Off;
+ALTER TABLE notification_settings
+DROP COLUMN Concert_News;
+
+
